@@ -6,7 +6,7 @@ function App() {  //component
     return (    //jsx
         <div className="App">
             <Userform title='User form' prop1='value1'/>
-            <Userform  title='Complain form'/>
+       {/*     <Userform  title='Complain form'/>*/}
 
         </div>
     );
