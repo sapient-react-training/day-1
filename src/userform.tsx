@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 interface User {
@@ -7,19 +7,34 @@ interface User {
     age: number;
     skill: string;
 }
-
+const URL = 'http://localhost:3001/profile';
 function Userform(props: any) {  //component
     const [user, setUser] = useState<User>({  //local
         name: '',
         age: 0,
         skill: ''
     });
+    const getUsers = async () => {
+        try {
+            const response = await fetch(URL);
+            const users = await response.json();
+            //second call
+            await fetch('second api ');
+            setUsers(users);
+        } catch (error) {
+            //logic
+        }
+    }
+    const [users, setUsers] = useState<any>([]);
+    useEffect(() => {
+        getUsers();
+    }, []);
     function updateValue(event: any) {
         setUser({ ...user, [event.target.name]: event.target.value });
     }
     function save(event: any) {
         /*   try {
-               const response = await fetch('http://localhost:3001/profile', {
+               const response = await fetch(URL, {
                    method: 'POST',
                    headers: {
                        'content-type': 'application/json'
@@ -31,7 +46,7 @@ function Userform(props: any) {  //component
                console.error(error);
            }*/
         try {
-            const promise = fetch('http://localhost:3001/profile', {
+            const promise = fetch(URL, {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
@@ -39,13 +54,15 @@ function Userform(props: any) {  //component
                 body: JSON.stringify(user)
             });
             promise.then((response) => {//100- 399
-                response.json().then(data => console.log(data));
+                response.json().then(savedUser => {
+                    setUsers([...users, savedUser]);
+                });
+
             });
             promise.catch(error => console.log(error));
         } catch (error) {//400-599
             console.error(error);
         }
-
     }
     return (    //jsx
         <div className="App">
