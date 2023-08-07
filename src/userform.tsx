@@ -17,20 +17,34 @@ function Userform(props: any) {  //component
     function updateValue(event: any) {
         setUser({ ...user, [event.target.name]: event.target.value });
     }
-    async function save(event: any) {
+    function save(event: any) {
+        /*   try {
+               const response = await fetch('http://localhost:3001/profile', {
+                   method: 'POST',
+                   headers: {
+                       'content-type': 'application/json'
+                   },
+                   body: JSON.stringify(user)
+               });
+               console.log(response);
+           } catch (error) {//400-599
+               console.error(error);
+           }*/
         try {
-            const response = await fetch('http://localhost:3001/profile', {
+            const promise = fetch('http://localhost:3001/profile', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify(user)
             });
-            console.log(response);
+            promise.then((response) => {//100- 399
+                response.json().then(data => console.log(data));
+            });
+            promise.catch(error => console.log(error));
         } catch (error) {//400-599
             console.error(error);
         }
-
 
     }
     return (    //jsx
