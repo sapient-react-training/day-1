@@ -1,0 +1,2 @@
+F:\Core-dotnet\sapient\reactproject1\obj\Debug\reactproject1.esproj.SuggestedBindingRedirects.cache
+F:\Core-dotnet\sapient\reactproject1\obj\Debug\reactproject1.esproj.CoreCompileInputs.cache
