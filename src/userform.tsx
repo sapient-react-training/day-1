@@ -78,7 +78,10 @@ function Userform(props: any) {  //component
             <h3>{props.title} , {props.prop1}</h3>
             <input name='name' value={user.name} onChange={updateValue} />
             <input name='age' type='number' value={user.age} onChange={updateValue} />
-            <input name='skill' value={user.skill} onChange={updateValue} />
+            <select name='skill' onChange={updateValue}>
+                <option value='.Net'>.Net</option>
+                <option  value='React'>React</option>
+            </select>
             <button onClick={save} >save</button>
             <ol>
                 {users.map((user) => {
