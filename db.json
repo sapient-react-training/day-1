@@ -13,33 +13,5 @@
       "postId": 1
     }
   ],
-  "profile": [
-    {
-      "id": 1
-    },
-    {
-      "name": "ajay",
-      "age": "3",
-      "skill": "java",
-      "id": 2
-    },
-    {
-      "name": "ajay",
-      "age": "3",
-      "skill": "java",
-      "id": 3
-    },
-    {
-      "name": "ram",
-      "age": "3",
-      "skill": ".net",
-      "id": 4
-    },
-    {
-      "name": "ram",
-      "age": "3",
-      "skill": ".net",
-      "id": 5
-    }
-  ]
+  "profile": []
 }

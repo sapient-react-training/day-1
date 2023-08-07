@@ -6,13 +6,15 @@ interface User {
     name: string;
     age: number;
     skill: string;
+    id: number;
 }
-const URL = 'http://localhost:3001/profile';
+const URL = 'http://localhost:3001/profile/';
 function Userform(props: any) {  //component
     const [user, setUser] = useState<User>({  //local
         name: '',
         age: 0,
-        skill: ''
+        skill: '',
+        id: -1
     });
     const getUsers = async () => {
         try {
@@ -25,7 +27,7 @@ function Userform(props: any) {  //component
             //logic
         }
     }
-    const [users, setUsers] = useState<any>([]);
+    const [users, setUsers] = useState<User[]>([]);
     useEffect(() => {
         getUsers();
     }, []);
@@ -46,6 +48,7 @@ function Userform(props: any) {  //component
                console.error(error);
            }*/
         try {
+            //delete user.id;
             const promise = fetch(URL, {
                 method: 'POST',
                 headers: {
@@ -54,7 +57,7 @@ function Userform(props: any) {  //component
                 body: JSON.stringify(user)
             });
             promise.then((response) => {//100- 399
-                response.json().then(savedUser => {
+                response.json().then((savedUser: User) => {
                     setUsers([...users, savedUser]);
                 });
 
@@ -64,6 +67,12 @@ function Userform(props: any) {  //component
             console.error(error);
         }
     }
+    async function deleteUser(id: number) {
+        const response = await fetch(URL + id, {
+            method: 'delete'
+        });
+        getUsers();
+    }
     return (    //jsx
         <div className="App">
             <h3>{props.title} , {props.prop1}</h3>
@@ -71,6 +80,11 @@ function Userform(props: any) {  //component
             <input name='age' type='number' value={user.age} onChange={updateValue} />
             <input name='skill' value={user.skill} onChange={updateValue} />
             <button onClick={save} >save</button>
+            <ol>
+                {users.map((user) => {
+                    return <li>{user.name}, {user.age}<button onClick={() => deleteUser(user.id)} >X</button></li>; //react element
+                })}
+            </ol>
         </div>
     );
 }
