@@ -13,5 +13,18 @@
       "postId": 1
     }
   ],
-  "profile": []
+  "profile": [
+    {
+      "name": "Pariwesh",
+      "age": 10,
+      "skill": ".Net Core",
+      "id": -1,
+      "gender": 0
+    }
+  ],
+  "skills": [
+    "React",
+    "javascript",
+    ".Net Core"
+  ]
 }

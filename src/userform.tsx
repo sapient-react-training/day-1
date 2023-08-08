@@ -21,6 +21,7 @@ function Userform(props: any) {  //component
         id: -1,
         gender: GENDER.MALE
     });
+    const [skills, setSkills] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedRecord, setSelectedRecord] = useState(null);
     const getUsers = async () => {
@@ -36,7 +37,13 @@ function Userform(props: any) {  //component
     }
     useEffect(() => {
         getUsers();
+        getskills();
     }, []);
+    async function getskills() {
+        const response = await fetch('http://localhost:3001/skills');
+        const skills = await response.json();
+        setSkills(skills);
+    }
     function updateValue(event: any) {
         setUser({ ...user, [event.target.name]: event.target.value });
     }
@@ -107,8 +114,11 @@ function Userform(props: any) {  //component
             <input name='name' value={user.name} onChange={updateValue} />
             <input name='age' type='number' value={user.age} onChange={updateValue} />
             <select name='skill' onChange={updateValue}>
-                <option value='.Net'>.Net</option>
-                <option value='React'>React</option>
+                {
+                    skills.map((skill) => {
+                        return <option value={skill}>{skill}</option>
+                    })
+                }
             </select>
             <input type='radio' name='gender' value='MALE' onChange={updateValue} />Male
             <input type='radio' name='gender' value='FEMALE' onChange={updateValue} />Female
