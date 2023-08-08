@@ -21,8 +21,8 @@ function Userform(props: any) {  //component
         id: -1,
         gender: GENDER.MALE
     });
-    let showModal = false;
-    let selectedRecord: any = null;
+    const [showModal, setShowModal] = useState(false);
+    const [selectedRecord, setSelectedRecord] = useState(null);
     const getUsers = async () => {
         try {
             const response = await fetch(URL);
@@ -41,7 +41,6 @@ function Userform(props: any) {  //component
         setUser({ ...user, [event.target.name]: event.target.value });
     }
     function save(event: any) {
-        showModal = !showModal;
         /*   try {
                const response = await fetch(URL, {
                    method: 'POST',
@@ -74,16 +73,19 @@ function Userform(props: any) {  //component
             console.error(error);
         }
     }
-    function deleteUser(id: number) {
-        showModal = !showModal;
-        selectedRecord = id;
-        console.log(showModal)
+    function deleteUser(id: any) {
+        setShowModal(!showModal);
+        setSelectedRecord(id);
     }
-    async function handleClose() {
-        const response = await fetch(URL + selectedRecord, {
-            method: 'delete'
-        });
-        getUsers();
+    async function handleDelete() {
+        if (selectedRecord != null) {
+            const response = await fetch(URL + selectedRecord, {
+                method: 'delete'
+            });
+            getUsers();
+            setShowModal(false);
+            setSelectedRecord(null);
+        }
     }
     return (    //jsx
         <div className="App">
@@ -93,10 +95,10 @@ function Userform(props: any) {  //component
                 </Modal.Header>
                 <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" >
                         No
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button variant="primary" onClick={handleDelete}>
                         Yes
                     </Button>
                 </Modal.Footer>

@@ -13,13 +13,5 @@
       "postId": 1
     }
   ],
-  "profile": [
-    {
-      "name": "Pariwesh",
-      "age": 10,
-      "skill": ".Net",
-      "id": -1,
-      "gender": 0
-    }
-  ]
+  "profile": []
 }
