@@ -1,21 +1,28 @@
 
 import React, { useEffect, useState } from 'react';
+import { Button, Modal } from 'react-bootstrap';
 import './App.css';
 
+enum GENDER { MALE, FEMALE }
 interface User {
     name: string;
     age: number;
     skill: string;
     id: number;
+    gender: GENDER;
 }
 const URL = 'http://localhost:3001/profile/';
 function Userform(props: any) {  //component
+    const [users, setUsers] = useState<User[]>([]);
     const [user, setUser] = useState<User>({  //local
-        name: '',
-        age: 0,
-        skill: '',
-        id: -1
+        name: 'Pariwesh',
+        age: 10,
+        skill: '.Net',
+        id: -1,
+        gender: GENDER.MALE
     });
+    let showModal = false;
+    let selectedRecord: any = null;
     const getUsers = async () => {
         try {
             const response = await fetch(URL);
@@ -27,7 +34,6 @@ function Userform(props: any) {  //component
             //logic
         }
     }
-    const [users, setUsers] = useState<User[]>([]);
     useEffect(() => {
         getUsers();
     }, []);
@@ -35,6 +41,7 @@ function Userform(props: any) {  //component
         setUser({ ...user, [event.target.name]: event.target.value });
     }
     function save(event: any) {
+        showModal = !showModal;
         /*   try {
                const response = await fetch(URL, {
                    method: 'POST',
@@ -67,28 +74,52 @@ function Userform(props: any) {  //component
             console.error(error);
         }
     }
-    async function deleteUser(id: number) {
-        const response = await fetch(URL + id, {
+    function deleteUser(id: number) {
+        showModal = !showModal;
+        selectedRecord = id;
+        console.log(showModal)
+    }
+    async function handleClose() {
+        const response = await fetch(URL + selectedRecord, {
             method: 'delete'
         });
         getUsers();
     }
     return (    //jsx
         <div className="App">
+            <Modal show={showModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Modal heading</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        No
+                    </Button>
+                    <Button variant="primary" onClick={handleClose}>
+                        Yes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <h3>{props.title} , {props.prop1}</h3>
             <input name='name' value={user.name} onChange={updateValue} />
             <input name='age' type='number' value={user.age} onChange={updateValue} />
             <select name='skill' onChange={updateValue}>
                 <option value='.Net'>.Net</option>
-                <option  value='React'>React</option>
+                <option value='React'>React</option>
             </select>
+            <input type='radio' name='gender' value='MALE' onChange={updateValue} />Male
+            <input type='radio' name='gender' value='FEMALE' onChange={updateValue} />Female
+
             <button onClick={save} >save</button>
             <ol>
                 {users.map((user) => {
-                    return <li>{user.name}, {user.age}<button onClick={() => deleteUser(user.id)} >X</button></li>; //react element
+                    return <li key={user.id}> {user.name}, {user.age}<button onClick={() => deleteUser(user.id)} >X</button></li>; //react element
                 })}
             </ol>
+
         </div>
+
     );
 }
 Userform.defaultProps = {
